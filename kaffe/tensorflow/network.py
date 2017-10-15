@@ -215,6 +215,16 @@ class Network(object):
         return tf.nn.softmax(input, name=name)
 
     @layer
+    def sigmoid(self, input, name):
+        input_shape = map(lambda v: v.value, input.get_shape())
+        if len(input_shape) > 2:
+            if input_shape[1] == 1 and input_shape[2] == 1:
+                input = tf.squeeze(input, squeeze_dims=[1, 2])
+            else:
+                raise ValueError('Rank 2 tensor input expected for sigmoid!')
+        return tf.nn.sigmoid(input, name=name)
+
+    @layer
     def batch_normalization(self, input, name, scale_offset=True, relu=False):
         # NOTE: Currently, only inference is supported
         with tf.variable_scope(name) as scope:

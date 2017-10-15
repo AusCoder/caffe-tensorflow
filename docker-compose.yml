@@ -1,0 +1,14 @@
+version: "2"
+services:
+  convert:
+    container_name: caffe_tf_convert
+    build: .
+    command: "python convert.py --caffemodel ./data/ResNet-50-model.caffemodel --data-output-path ./data/data.npy --code-output-path ./kaffe/model.py ./data/ResNet-50-deploy.prototxt"
+    volumes:
+      - ./:/root/app/
+  test:
+    container_name: caffe_tf_test
+    build: .
+    command: "python test/test_conversion.py"
+    volumes:
+      - ./:/root/app/
